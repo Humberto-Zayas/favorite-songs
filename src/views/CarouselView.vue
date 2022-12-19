@@ -1,12 +1,13 @@
 <template>
   <div class="carousel-container">
-    <Carousel id="gallery" :autoplay="10000" :items-to-show="1" :wrap-around="true" :transition="1000" v-model="currentSlide" @slide-start="handleSlideStart" @slide-end="handleSlideEnd">
+    <Carousel @slide-start="handleSlideStart" @slide-end="handleSlideEnd" id="gallery" :autoplay="20000" :items-to-show="1" :wrap-around="true" :transition="1000" v-model="currentSlide">
       <Slide :style="`background-image: linear-gradient(0deg, rgba(0,0,0,1) 4%, rgba(0,0,0,0.5) 80%, rgba(255,255,255,0.06068364845938379) 100%), url(${song.image})`" class="backdrop" v-for="song in favoriteSongs" :key="song.id">
-        <div class="carousel__item">{{ song.name }} | {{ song.id }} </div>
+        <div class="carousel__item">{{ song.name }} </div>
+        
       </Slide>
     </Carousel>
 
-    <Carousel id="thumbnails" :items-to-show="3.5" :wrap-around="true" v-model="currentSlide" ref="carousel">
+    <Carousel @slide-start="handleSlideStart" @slide-end="handleSlideEnd" id="thumbnails" :items-to-show="3.5" :wrap-around="true" v-model="currentSlide" ref="carousel">
       <Slide :style="`background-image: url(${slide.image});`" v-for="slide in favoriteSongs" :class="'galla galla' + slide.id" :itemsToShow="3.95" :key="slide.id">
         <div class="carousel__item" @click="slideTo(slide.id - 1)">{{ slide.name }}</div>
 
@@ -14,7 +15,7 @@
     </Carousel>
   </div>
 </template>
-
+ 
 <style>
 .backdrop {
   background-position: bottom left;
@@ -129,13 +130,15 @@ export default defineComponent({
   },
   data: () => ({
     currentSlide: 0,
-    nervosa2: nervosa2,
+    currentSong: null,
+    previousSong: '',
     favoriteSongs: [
       {
         name: 'Warm',
         id: 1,
         image: warm,
         src: ['/music/warm.mp3'],
+        howl: null,
         reasons: [
           'Reason one',
           'Reason two',
@@ -147,6 +150,7 @@ export default defineComponent({
         id: 2,
         image: brakence2,
         src: ['/music/brakence.mp3'],
+        howl: null,
         reasons: [
           'Reason one',
           'Reason two',
@@ -158,6 +162,7 @@ export default defineComponent({
         id: 3,
         image: argyle,
         src: ['/music/argyle.mp3'],
+        howl: null,
         reasons: [
           'Reason one',
           'Reason two',
@@ -169,6 +174,7 @@ export default defineComponent({
         id: 4,
         image: hypochondriac,
         src: ['/music/hypochondriac.mp3'],
+        howl: null,
         reasons: [
           'Reason one',
           'Reason two',
@@ -180,6 +186,7 @@ export default defineComponent({
         id: 5,
         image: nervosa2,
         src: ['/music/nervosa2.mp3'],
+        howl: null,
         reasons: [
           'Reason one',
           'Reason two',
@@ -190,33 +197,30 @@ export default defineComponent({
   }),
   methods: {
     slideTo(val: number) {
+      this.currentTrack.stop();
       this.currentSlide = val
     },
     handleSlideStart(data: any) {
-      // this.$Progress.start();
-      console.log('song to start: ', this.favoriteSongs[this.currentSlide].name)
-      var sound = new Howl({
-        src: ['/music/nervosa2.mp3'],
-        html5: true
-      });
-
-      // sound.play();
-      // sound.fade(0, 1, 2000);
-
-      // setTimeout(() => {
-
-      //   sound.fade(1, 0, 2000);
-      // }, 9000)
-
-      // setTimeout(() => {
-
-      //   sound.stop(0);
-      // }, 10000)
-
+      this.currentTrack.stop()
     },
     handleSlideEnd(data: any) {
-      // console.log('song to end:', this.favoriteSongs[this.currentSlide -1].name)
+      if (!this.currentTrack.playing()) {
+        console.log(this.currentTrack.playing())
+        this.currentTrack.play()  
+      }
     }
   },
+  mounted: function () {
+    this.currentTrack.play(); 
+  },
+  computed: {
+    currentTrack () {
+      var sound = new Howl({
+        src: this.favoriteSongs[this.currentSlide].src,
+        html5: true,
+      })
+      return sound;
+    }
+  }
 })
 </script>

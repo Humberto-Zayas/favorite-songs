@@ -21,7 +21,7 @@ const router = createRouter({
     {
       path: '/songs',
       name: 'songs',
-      component: CarouselView
+      component: CarouselView 
     },
   ]
 })
