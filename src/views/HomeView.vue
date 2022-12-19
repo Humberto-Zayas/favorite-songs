@@ -10,7 +10,7 @@ import TheWelcome from '../components/TheWelcome.vue'
 
     <p>So I made a website that has my top 5 Brakence songs to you</p>
 
-    <p style="font-weight: bold">Make sure you have SOUND ON, it's important</p>
+    <p style="font-weight: bold">Make sure you have SOUND ON, it's important, and make sure you go all the way to the end</p>
 
     
     <router-link class="darkBtn" to="/songs">Start</router-link>
@@ -25,6 +25,8 @@ main {
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+  padding: 2em;
+  text-align: center;
 }
 .darkBtn {
   padding: 0.5em 1em;

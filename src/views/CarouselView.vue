@@ -1,10 +1,15 @@
 <template>
   <div class="carousel-container">
-    <Carousel @slide-start="handleSlideStart" @slide-end="handleSlideEnd" @loop="handleLoop" id="gallery" :autoplay="20000" :items-to-show="1"
-      :wrap-around="true" :transition="1000" v-model="currentSlide">
+    <div class="fakeNav">
+      <div><router-link to="/"><img :src="start"></router-link></div>
+      <div><router-link to="/about"><img :src="finish"></router-link></div>
+    </div>
+    <Carousel @slide-start="handleSlideStart" @slide-end="handleSlideEnd" @loop="handleLoop" id="gallery"
+      :autoplay="22000" :items-to-show="1" :wrap-around="true" :transition="1000" v-model="currentSlide">
       <Slide
         :style="`background-image: linear-gradient(0deg, rgba(0,0,0,1) 4%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.3) 100%), url(${song.image})`"
         class="backdrop" v-for="(song, index) in favoriteSongs" :key="song.id">
+
         <Transition>
           <h2 style="font-weight: bold" class="carousel__item">{{ index + 1 }}. {{ song.name }}</h2>
         </Transition>
@@ -38,6 +43,16 @@
 </template>
  
 <style scoped>
+.fakeNav {
+  display: flex;
+  position: fixed;
+  z-index: 10;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0.8em;
+  opacity: 0.7;
+}
+
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.5s ease;
@@ -53,14 +68,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  height: 75vh;
+  height: 68vh;
 }
 
 .carousel-container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 100vh;
+  min-height: 95vh;
   padding-bottom: 3em;
 }
 
@@ -68,9 +83,9 @@
   background-size: cover;
 }
 
-#gallery {
+/* #gallery {
   height: 75vh;
-}
+} */
 
 
 .galla1 {
@@ -147,7 +162,8 @@
 
 <script lang="ts">
 import { Howl, Howler } from 'howler';
-
+import start from '../assets/images/power.svg'
+import finish from '../assets/images/log-out.svg'
 import { defineComponent, Transition } from 'vue'
 import { Carousel, Slide } from 'vue3-carousel'
 
@@ -167,6 +183,8 @@ export default defineComponent({
     Slide,
   },
   data: () => ({
+    start: start,
+    finish: finish,
     show: false,
     showOne: false,
     showTwo: false,
@@ -230,7 +248,7 @@ export default defineComponent({
         src: ['/music/nervosa2.mp3'],
         howl: null,
         reasons: [
-          'This was the first song by him you sent me to me',
+          'This was the first song by him you sent me',
           'At first I didn\'t like it at all, but now I ruv it',
           'It always reminds me of when we first started talking more'
         ]
@@ -266,7 +284,7 @@ export default defineComponent({
       this.currentSlide = val
     },
     handleSlideStart(data: any) {
-      
+
       this.currentTrack.stop()
       this.resetShows();
     },
@@ -274,15 +292,15 @@ export default defineComponent({
       this.startShows();
       if (!this.currentTrack.playing()) {
         console.log(this.currentTrack.playing())
-        
-       
+
+
         this.currentTrack.play()
-        
+
       }
 
       this.startShows()
 
-      
+
     }
   },
   mounted: function () {
@@ -299,6 +317,15 @@ export default defineComponent({
       this.showThree = true
     }, 10000)
 
+  },
+  // onDestroy: function () {
+  //   this.currentTrack.stop()
+  //   this.currentSlide = 0
+  // },
+  unmounted: function () {
+    console.log('unmounting')
+    this.currentTrack.stop()
+    this.currentSlide = 0
   },
   computed: {
     currentTrack() {
