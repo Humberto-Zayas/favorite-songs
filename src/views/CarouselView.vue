@@ -15,17 +15,17 @@
           </Transition>
           <div style="height: 100px; width: 80%">
             <Transition>
-              <div v-if="showOne" class="carousel__item">{{ song.reasons[0] }} </div>
+              <div v-if="currentSongIndex === index && showOne" class="carousel__item">{{ song.reasons[0] }} </div>
             </Transition>
           </div>
           <div style="height: 100px; width: 80%">
             <Transition>
-              <div v-if="showTwo" class="carousel__item">{{ song.reasons[1] }} </div>
+              <div v-if="currentSongIndex === index && showTwo" class="carousel__item">{{ song.reasons[1] }} </div>
             </Transition>
           </div>
           <div style="height: 100px; width: 80%">
             <Transition>
-              <div v-if="showThree" class="carousel__item">{{ song.reasons[2] }} </div>
+              <div v-if="currentSongIndex === index && showThree" class="carousel__item">{{ song.reasons[2] }} </div>
             </Transition>
           </div>
         </Slide>
@@ -41,11 +41,14 @@
         </Slide>
       </template>
     </Carousel>
+
+    <button @click="togglePause">{{ isPaused ? 'Resume' : 'Pause' }}</button>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, onUnmounted } from 'vue'
+import type { Ref } from 'vue';
 import { Howl } from 'howler'
 import start from '../assets/images/power.svg'
 import finish from '../assets/images/log-out.svg'
@@ -64,95 +67,83 @@ export default defineComponent({
     const startSrc = start;
     const finishSrc = finish;
 
-    const showOne = ref(false);
-    const showTwo = ref(false);
-    const showThree = ref(false);
-    const currentSlide = ref(0);
+    const currentSlide: Ref<number> = ref(0);
+    const isPaused: Ref<boolean> = ref(false);
+    const currentSongIndex: Ref<number | null> = ref(null); // Track the index of the currently playing song
 
-    const currentTrack = computed(() => {
-      return new Howl({
-        src: favoriteSongs[currentSlide.value].src,
+    let currentTrack: Howl | null = null; // Store the currently playing Howl instance
+
+    // Play the audio for the specified song index
+    function playAudio(index: number) {
+      if (currentTrack) {
+        currentTrack.stop(); // Stop the currently playing audio
+      }
+      currentSongIndex.value = index; // Update the current song index
+      currentTrack = new Howl({
+        src: favoriteSongs[index].src,
         html5: true,
+        onend: () => {
+          currentSongIndex.value = null; // Reset the current song index when audio ends
+        },
       });
-    });
+      currentTrack.play(); // Play the audio
+    }
 
     function handleLoop() {
       console.log('Looping');
-      currentTrack.value.stop();
+      if (currentTrack) {
+        currentTrack.stop();
+      }
       // You may need to adjust this part according to your routing logic
       // this.$router.push('/about');
     }
 
-    function resetShows() {
-      showOne.value = false;
-      showTwo.value = false;
-      showThree.value = false;
-    }
-
-    function startShows() {
-      setTimeout(() => {
-        showOne.value = true;
-      }, 2000);
-
-      setTimeout(() => {
-        showTwo.value = true;
-      }, 6000);
-
-      setTimeout(() => {
-        showThree.value = true;
-      }, 11000);
-    }
-
-    function slideTo(val: number) {
-      currentTrack.value.stop();
-      currentSlide.value = val;
-    }
-
     function handleSlideStart() {
-      currentTrack.value.stop();
-      resetShows();
+      if (currentTrack) {
+        currentTrack.stop(); // Stop the audio when sliding to a new song
+      }
     }
 
     function handleSlideEnd() {
-      startShows();
-      if (!currentTrack.value.playing()) {
-        currentTrack.value.play();
+      if (!isPaused.value) {
+        playAudio(currentSlide.value); // Play the audio for the current slide
+      }
+    }
+
+    function togglePause() {
+      isPaused.value = !isPaused.value;
+      if (isPaused.value && currentTrack) {
+        currentTrack.pause(); // Pause the audio
+      } else if (currentTrack && currentSongIndex.value !== null) {
+        currentTrack.play(); // Resume playing the audio if it's paused
+      }
+    }
+
+    function slideTo(val: number) {
+      currentSlide.value = val;
+      if (!isPaused.value) {
+        playAudio(val); // Play the audio for the selected slide
       }
     }
 
     onMounted(() => {
-      currentTrack.value.play();
-      setTimeout(() => {
-        showOne.value = true;
-      }, 1000);
-
-      setTimeout(() => {
-        showTwo.value = true;
-      }, 5000);
-
-      setTimeout(() => {
-        showThree.value = true;
-      }, 10000);
+      playAudio(currentSlide.value); // Play the audio for the initial slide
     });
 
     onUnmounted(() => {
-      console.log('unmounting');
-      currentTrack.value.stop();
-      currentSlide.value = 0;
+      if (currentTrack) {
+        currentTrack.stop(); // Stop the audio when the component is unmounted
+      }
     });
 
     return {
       start: startSrc,
       finish: finishSrc,
-      showOne,
-      showTwo,
-      showThree,
       currentSlide,
-      handleLoop,
-      handleSlideStart,
-      handleSlideEnd,
+      togglePause,
+      isPaused,
       slideTo,
-      favoriteSongs, // Expose favoriteSongs
+      favoriteSongs,
     };
   },
 });
