@@ -1,68 +1,55 @@
-import nervosa2 from '../assets/images/nervosa2.png';
-import warm from '../assets/images/warm.png';
-import hypochondriac from '../assets/images/hypochondriac.png';
-import brakence2 from '../assets/images/brakence2.png';
-import argyle from '../assets/images/argyle.png';
+import one from '../assets/images/one.jpg';
+import two from '../assets/images/two.jpg';
+import three from '../assets/images/three.jpg';
+import four from '../assets/images/four.jpg';
 
 export const favoriteSongs = [
   {
-    name: 'Warm',
+    name: 'Might Be Too Late',
     id: 1,
-    image: warm,
-    src: ['/music/warm.mp3'],
+    image: one,
+    src: ['/music/mightbetoolate.mp3'],
     howl: null,
     reasons: [
-      'I never heard this combo of RnB and glitch, I ruv it',
-      'I love you love Brakence, you have good taste in moosic',
-      'He really has somethign for everyone imo'
+      'Bartender fill up my cup',
+      'Ain\'t even drop my album yet, but im here doubting it',
+      'I\'m screaming out its my time'
     ]
   },
   {
-    name: 'Brakence 2.0 Freestyle',
+    name: 'One Of Them Ones (OOTO)',
     id: 2,
-    image: brakence2,
-    src: ['/music/brakence.mp3'],
+    image: two,
+    src: ['/music/oneofthemones.mp3'],
     howl: null,
     reasons: [
-      'Some of my favorite lines are thrown out on this track',
-      '"Eat fuck and make beats then I fall backwards" - singing my life with his words',
-      '"She said she wanna fuck with a synth nerd from the suburbs" - damn!'
+      'I\'m One Of Them Ones',
+      'Monsanto is an American agrochemical and agricultural biotechnology corporation that was founded in 1901.',
+      'He\'s spraying the industry plants to kill them off'
     ]
   },
   {
-    name: 'Argyle',
+    name: 'For Real',
     id: 3,
-    image: argyle,
-    src: ['/music/argyle.mp3'],
+    image: three,
+    src: ['/music/forreal.mp3'],
     howl: null,
     reasons: [
-      'Maybe not the best song to put in here to you, but it\'s real',
-      'The torment of dealing with/pushing away love and finding where shit in your life sits and whatnot',
-      'I guess it\'s all part of the story, idk I think too much tho'
+      'she wanna toot that up',
+      'all the blessings I be getting they premeditated',
+      'she said pardon me...'
     ]
   },
   {
-    name: 'Hypochondriac',
+    name: 'Red Pill',
     id: 4,
-    image: hypochondriac,
-    src: ['/music/hypochondriac.mp3'],
+    image: four,
+    src: ['/music/redpill.mp3'],
     howl: null,
     reasons: [
-      'First of all the entire album is fire and I love every song',
-      'This one is really sweet and if I had to pick one to you this would be it',
-      '<3'
+      'Yeaaa, I done popped the red pill',
+      'Use a hunnid dolla bill to wipe my eyes when I cry',
+      'It\'s funny because of the cultural shift and the dialogue on it'
     ]
   },
-  {
-    name: 'Nervosa2',
-    id: 5,
-    image: nervosa2,
-    src: ['/music/nervosa2.mp3'],
-    howl: null,
-    reasons: [
-      'This was the first song by him you sent me',
-      'At first I didn\'t like it at all, but now I ruv it',
-      'It always reminds me of when we first started talking more'
-    ]
-  }
 ];

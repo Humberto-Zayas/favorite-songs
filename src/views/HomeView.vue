@@ -4,13 +4,13 @@ import TheWelcome from '../components/TheWelcome.vue'
 
 <template>
   <main>
-    <h1>Sorry We Missed Brakence</h1>
+    <h1>Virtual Mixtape Idea</h1>
 
-    <p>That's mf whack I was really looking forward to going with you</p>
+    <p>Highlight special songs from a mixtape with creative visuals</p>
 
-    <p>So I made a website that has my top 5 Brakence songs to you</p>
+    <p>Can be modified to the creators vision (ex: collect emails etc..)</p>
 
-    <p style="font-weight: bold">Make sure you have SOUND ON, it's important, and make sure you go all the way to the end</p>
+    <p style="font-weight: bold">Share a link to a playlist or product at the end</p>
 
     
     <router-link class="darkBtn" to="/songs">Start</router-link>

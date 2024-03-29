@@ -1,10 +1,10 @@
 <template>
   <main>
-    <h1>Also here's a playlist from me to you or whateva</h1>
+    <h1>Share a playlist or other call to action</h1>
 
-    <p>Wouldn't this make a cool site tho you come and pick 5 songs and then give someone you like a playlist?</p>
+    <p>Share a link to a place they can listen to more songs on the platform you'd like them to use.</p>
 
-    <a target="_blank" href="https://open.spotify.com/playlist/2018d9C9m8IWiUBDMBFq5Z?si=cc55f9d47fa9421e">Click here for the playlist or whatever</a>
+    <a target="_blank" href="https://untitled.stream/library/project/LfcveRZJG8DKFyNrbtd-S">Click Here For The Playlist</a>
     <router-link class="darkBtn" to="/">Re-Start</router-link>
   </main>
 </template>
