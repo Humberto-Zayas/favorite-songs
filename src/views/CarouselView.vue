@@ -35,8 +35,7 @@
     <Carousel @slide-start="handleSlideStart" @slide-end="handleSlideEnd" id="thumbnails" :items-to-show="3.5"
       :wrap-around="true" v-model="currentSlide" ref="carousel">
       <template v-for="slide in favoriteSongs" :key="slide.id">
-        <Slide :style="`background-image: url(${slide.image});`"
-          :class="'galla galla' + slide.id" :itemsToShow="3.95">
+        <Slide :style="`background-image: url(${slide.image});`" :class="'galla galla' + slide.id" :itemsToShow="3.95">
           <div class="carousel__item" @click="slideTo(slide.id - 1)">{{ slide.name }}</div>
         </Slide>
       </template>
@@ -66,7 +65,9 @@ export default defineComponent({
   setup() {
     const startSrc = start;
     const finishSrc = finish;
-
+    const showOne = ref(false);
+    const showTwo = ref(false);
+    const showThree = ref(false);
     const currentSlide: Ref<number> = ref(0);
     const isPaused: Ref<boolean> = ref(false);
     const currentSongIndex: Ref<number | null> = ref(null); // Track the index of the currently playing song
@@ -98,6 +99,26 @@ export default defineComponent({
       // this.$router.push('/about');
     }
 
+    function resetShows() {
+      showOne.value = false;
+      showTwo.value = false;
+      showThree.value = false;
+    }
+
+    function startShows() {
+      setTimeout(() => {
+        showOne.value = true;
+      }, 2000);
+
+      setTimeout(() => {
+        showTwo.value = true;
+      }, 6000);
+
+      setTimeout(() => {
+        showThree.value = true;
+      }, 11000);
+    }
+
     function handleSlideStart() {
       if (currentTrack) {
         currentTrack.stop(); // Stop the audio when sliding to a new song
@@ -105,19 +126,24 @@ export default defineComponent({
     }
 
     function handleSlideEnd() {
+      resetShows(); // Reset the show flags for reasons
+      startShows(); // Start showing reasons for the new track
       if (!isPaused.value) {
         playAudio(currentSlide.value); // Play the audio for the current slide
       }
     }
 
     function togglePause() {
-      isPaused.value = !isPaused.value;
-      if (isPaused.value && currentTrack) {
-        currentTrack.pause(); // Pause the audio
-      } else if (currentTrack && currentSongIndex.value !== null) {
-        currentTrack.play(); // Resume playing the audio if it's paused
+      if (currentTrack) {
+        if (isPaused.value) {
+          currentTrack.play(); // Resume playing the audio
+        } else {
+          currentTrack.pause(); // Pause the audio
+        }
+        isPaused.value = !isPaused.value; // Toggle the pause state
       }
     }
+
 
     function slideTo(val: number) {
       currentSlide.value = val;
@@ -140,10 +166,19 @@ export default defineComponent({
       start: startSrc,
       finish: finishSrc,
       currentSlide,
+      currentSongIndex,
       togglePause,
       isPaused,
       slideTo,
       favoriteSongs,
+      handleSlideStart,
+      handleSlideEnd,
+      handleLoop,
+      showOne,
+      showTwo,
+      showThree,
+      startShows,
+      resetShows
     };
   },
 });
