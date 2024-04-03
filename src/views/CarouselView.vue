@@ -8,10 +8,10 @@
       :autoplay="22000" :items-to-show="1" :wrap-around="true" :transition="1000" v-model="currentSlide">
       <template v-for="(song, index) in favoriteSongs" :key="song.id">
         <Slide
-          :style="`background-image: linear-gradient(0deg, rgba(0,0,0,1) 4%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.3) 100%), url(${song.image})`"
+          :style="`background-image: linear-gradient(0deg, rgba(6,6,6,1) 4%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.3) 100%), url(${song.image})`"
           class="backdrop">
           <Transition>
-            <h2 style="font-weight: bold" class="carousel__item">{{ index + 1 }}. {{ song.name }}</h2>
+            <h2 style="font-weight: bold; padding-top: 2em" class="carousel__item">{{ index + 1 }}. {{ song.name }}</h2>
           </Transition>
           <div style="height: 100px; width: 80%">
             <Transition>
@@ -40,8 +40,6 @@
         </Slide>
       </template>
     </Carousel>
-
-    <button @click="togglePause">{{ isPaused ? 'Resume' : 'Pause' }}</button>
   </div>
 </template>
 
